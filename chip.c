@@ -51,7 +51,7 @@ void initCHIP8(Chip8 *chip8) {
     // loading fontset
     for (int i = 0; i < 80; i++) {
         chip8->memory[FONT_ADDRESS + i] = fontset[i];
-    } 
+    }
 
     // reset timers
 }
@@ -63,8 +63,71 @@ void loadROM(Chip8 *chip8, char *filename) {
         fprintf(stderr, "Error couldn't open ROM %s\n", filename);
     }
 
-    
-    for (int i = 0; i < ) {
-        
+    char c;
+    int i = 0;
+    while (c = fgetc(fp) != EOF ) {
+        if (START_ADDRESS + i > MEMORY_SIZE) {
+            fprintf(stderr, "ROM size is too large\n");
+            fclose(fp);
+            return;
+        }
+        chip8->memory[START_ADDRESS + i] = c;
+        i++;
+    }
+
+    fclose(fp);
+}
+
+void emulateCycle (Chip8 *chip8){
+
+        // here << is bitwise left, used to occupy upper half 8 bits then | merges the two bytes together
+        chip8->opcode = (chip8->memory[chip8->pc] << 8) | chip8->memory[chip8->pc + 1];
+        uint16_t opcode = chip8->opcode;
+        chip8->pc += 2;
+
+        // imp variables to be used in instructions.
+        uint16_t nnn = opcode & 0x0FFF; // last 12 bits, usually an address
+        uint8_t n = opcode & 0x000F; // forth nibble, 4 bits
+        uint8_t x = opcode & 0x0F00 >> 8; // second nibble, usually a register index
+        uint8_t y = opcode & 0x00F0 >> 4; // third nibble, usually a register index
+        uint8_t nn = opcode & 0x00FF; // last two nibbles, lower byte
+
+        switch (opcode & 0xF000) // gives us the first nibble
+        {
+            case 0x000:
+                switch (opcode & 0x00F) {
+                    case 0x0000: // 0x00E0 clears the screen, we got the last nibble from it.
+                        memset(chip8->video, 0, SCREEN_HEIGHT * SCREEN_WIDTH);
+                        break;
+                    case 0x000E: // 0x00EE return from subroutine
+                        chip8->pc = chip8->stack[--chip8->sp];
+                        break;
+                    default:
+                        fprintf(stderr, "Unknown opcode [0x000]: 0x%X\n", opcode);
+                }
+            break;
+            case 0x1000: // 0x1NNN jmp to address nnn
+                chip8->pc = nnn;
+                break;
+            case 0x6000: // 0x6XNN set register VX
+                chip8->registers[x] = nn;
+                break;
+            case 0x7000:
+                chip8->registers[x] += nn;
+                break;
+            case 0xA000:
+                chip8->index = nnn;
+                break;
+            case 0xD000: // 0xDXYN display/Draw
+                uint16_t pixel;
+                uint8_t height = n; // number of rows, got it from the last nibble.
+                for (int yline = 0; yline < n; yline++) {
+                    pixel = chip8->memory[chip8->index + yline];
+                   for (int xline = 0; xline < 8; xline++) {
+                       if (pixel & ())
+                   } 
+                }
+        }
+
     }
 }
