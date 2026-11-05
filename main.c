@@ -4,22 +4,26 @@
 
 int main(int argc, char **argv) {
 
-    char filename = **argv;
     Chip8 chip8;
     Display display;
 
-    diplayInit(&display);
-
     initCHIP8(&chip8);
-    loadROM(&chip8, &filename);
+    loadROM(&chip8, argv[1]);
+    diplayInit(&display);
 
     bool done = false;
     while (!done) {
+
         while (SDL_PollEvent(&display.event)) {
             if (display.event.type == SDL_EVENT_QUIT) {
                 done = true;
             }
         }
+
+        for (int i = 0; i < 10; i++) {
+            emulateCycle(&chip8);
+        }
+
         displayDraw(&display, &chip8);
     }
 
