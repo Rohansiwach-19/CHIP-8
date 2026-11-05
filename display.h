@@ -1,6 +1,8 @@
 #ifndef DISPLAY_H
 #define DISPLAY_H
 
+
+#include "chip.h"
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_main.h>
 #include <stdbool.h>
@@ -18,6 +20,6 @@ typedef struct Display {
 
 
 bool diplayInit(Display *display);
-bool displayDraw(Display *display);
+bool displayDraw(Display *display, Chip8 *chip8);
 
 bool displayDestroy(Display *display);

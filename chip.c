@@ -124,18 +124,23 @@ void emulateCycle (Chip8 *chip8){
                 break;
 
             case 0xD000: // 0xDXYN display/Draw
-                uint16_t pixel;
+                uint8_t spriteByte;
                 uint8_t height = n; // number of rows, got it from the last nibble.
                 uint8_t x_loc = chip8->registers[x]; // get the value of Vx for the coordinates
                 uint8_t y_loc = chip8->registers[y];
+
                 for (int rows = 0; rows < n; rows++) {
-                    pixel = chip8->memory[chip8->index + rows];
+                    spriteByte = chip8->memory[chip8->index + rows];
                    for (int col = 0; col < 8; col++) {
-                       if ((pixel & (0x80 >> col)) != 0) {
-                           if (chip8->video[(x_loc + col + ((y_loc + rows) * 64))] == 1) {
+                       uint8_t spritePixel = spriteByte & (0x80 >> col);
+                       uint32_t *screenPixel = &chip8->video[(x_loc + col + ((y_loc + rows) * 64);
+
+                       if (spritePixel) {
+                           if (*screenPixel == 0xFFFFFFFF) {
                                chip8->registers[0xF] = 1; // collision
                            }
-                           chip8->video[x_loc + col + ((y_loc + rows) * 64)] ^= 1;
+
+                           *screenPixel ^= 1;
                        }
                    }
                 }
