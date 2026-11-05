@@ -26,3 +26,8 @@ typedef struct {
     uint16_t opcode;
 
 }Chip8;
+
+
+void initCHIP8(Chip8 *chip8);
+void loadROM(Chip8 *chip8, char *filename);
+void emulateCycle(Chip8 *chip8);
