@@ -105,29 +105,43 @@ void emulateCycle (Chip8 *chip8){
                     default:
                         fprintf(stderr, "Unknown opcode [0x000]: 0x%X\n", opcode);
                 }
-            break;
+                break;
+
             case 0x1000: // 0x1NNN jmp to address nnn
                 chip8->pc = nnn;
                 break;
+
             case 0x6000: // 0x6XNN set register VX
                 chip8->registers[x] = nn;
                 break;
+
             case 0x7000:
                 chip8->registers[x] += nn;
                 break;
-            case 0xA000:
+
+            case 0xA000: // 0xANNN, set index register I
                 chip8->index = nnn;
                 break;
+
             case 0xD000: // 0xDXYN display/Draw
                 uint16_t pixel;
                 uint8_t height = n; // number of rows, got it from the last nibble.
-                for (int yline = 0; yline < n; yline++) {
-                    pixel = chip8->memory[chip8->index + yline];
-                   for (int xline = 0; xline < 8; xline++) {
-                       if (pixel & ())
-                   } 
+                uint8_t x_loc = chip8->registers[x]; // get the value of Vx for the coordinates
+                uint8_t y_loc = chip8->registers[y];
+                for (int rows = 0; rows < n; rows++) {
+                    pixel = chip8->memory[chip8->index + rows];
+                   for (int col = 0; col < 8; col++) {
+                       if ((pixel & (0x80 >> col)) != 0) {
+                           if (chip8->video[(x_loc + col + ((y_loc + rows) * 64))] == 1) {
+                               chip8->registers[0xF] = 1; // collision
+                           }
+                           chip8->video[x_loc + col + ((y_loc + rows) * 64)] ^= 1;
+                       }
+                   }
                 }
+                chip8->drawFlag = true;
+                chip8->pc += 2;
+                break;
         }
-
     }
 }

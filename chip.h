@@ -22,9 +22,9 @@ typedef struct {
     uint8_t delayTimer;
     uint8_t soundTimer;
     uint8_t keypad[NUM_KEYS];
-    uint32_t video[SCREEN_WIDTH*SCREEN_HEIGHT];
+    uint32_t video[SCREEN_HEIGHT * SCREEN_WIDTH];
     uint16_t opcode;
-
+    bool drawFlag;
 }Chip8;
 
 
