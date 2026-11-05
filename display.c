@@ -37,12 +37,12 @@ bool displayInit (Display *display) {
 }
 
 bool displayDraw(Display *display, Chip8 *chip8) {
-    uint32 pixels[SCREEN_WIDTH * SCREEN_HEIGHT];
+    uint32_t pixels[SCREEN_WIDTH * SCREEN_HEIGHT];
     int pitch = SCREEN_WIDTH * sizeof(uint32_t);
     int const size = SCREEN_WIDTH * SCREEN_HEIGHT;
 
     for (int i = 0; i < size; i++) {
-        pixels[i] = Chip8->video[i] ? 0xFFFFFFFF : 0x000000FF;
+        pixels[i] = chip8->video[i] ? 0xFFFFFFFF : 0x000000FF;
     }
 
     SDL_UpdateTexture(display->texture, NULL, pixels, pitch);

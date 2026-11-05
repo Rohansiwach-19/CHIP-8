@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdint.h>
+#include <string.h>
 #include "chip.h"
 
 const uint8_t fontset[FONT_SIZE] = {
@@ -19,7 +20,7 @@ const uint8_t fontset[FONT_SIZE] = {
     0xE0, 0x90, 0x90, 0x90, 0xE0, // D
     0xF0, 0x80, 0xF0, 0x80, 0xF0, // E
     0xF0, 0x80, 0xF0, 0x80, 0x80  // F
-}
+};
 
 void initCHIP8(Chip8 *chip8) {
 
@@ -133,7 +134,7 @@ void emulateCycle (Chip8 *chip8){
                     spriteByte = chip8->memory[chip8->index + rows];
                    for (int col = 0; col < 8; col++) {
                        uint8_t spritePixel = spriteByte & (0x80 >> col);
-                       uint32_t *screenPixel = &chip8->video[(x_loc + col + ((y_loc + rows) * 64);
+                       uint32_t *screenPixel = &chip8->video[(x_loc + col + ((y_loc + rows) * 64))];
 
                        if (spritePixel) {
                            if (*screenPixel == 0xFFFFFFFF) {

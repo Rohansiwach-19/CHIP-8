@@ -5,6 +5,7 @@
 #include "chip.h"
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_main.h>
+#include <stdio.h>
 #include <stdbool.h>
 
 
@@ -23,3 +24,5 @@ bool diplayInit(Display *display);
 bool displayDraw(Display *display, Chip8 *chip8);
 
 bool displayDestroy(Display *display);
+
+#endif

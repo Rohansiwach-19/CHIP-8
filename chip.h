@@ -31,3 +31,6 @@ typedef struct {
 void initCHIP8(Chip8 *chip8);
 void loadROM(Chip8 *chip8, char *filename);
 void emulateCycle(Chip8 *chip8);
+
+
+#endif
