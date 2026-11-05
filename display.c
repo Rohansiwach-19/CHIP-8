@@ -1,6 +1,6 @@
 #include "display.h"
 
-
+#define SCALE 10
 
 
 bool displayInit (Display *display) {
@@ -9,7 +9,7 @@ bool displayInit (Display *display) {
         return false;
     }
 
-    display->window = SDL_CreateWindow("CHIP 8", SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_RESIZABLE);
+    display->window = SDL_CreateWindow("CHIP 8", SCREEN_WIDTH * SCALE, SCREEN_HEIGHT * SCALE, SDL_WINDOW_RESIZABLE);
     if (!display->window)
     {
         fprintf(stderr, "Couldn't initialize the Window or renderer: %s\n", SDL_GetError());
@@ -47,7 +47,7 @@ bool displayDraw(Display *display, Chip8 *chip8) {
 
     SDL_UpdateTexture(display->texture, NULL, pixels, pitch);
     SDL_RenderClear(display->renderer);
-    SDL_RenderCopy(display->renderer, display->texture, NULL, NULL);
+    SDL_RenderTexture(display->renderer, display->texture, NULL, NULL);
     SDL_RenderPresent(display->renderer);
 }
 

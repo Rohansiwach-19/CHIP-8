@@ -20,7 +20,7 @@ typedef struct Display {
 } Display;
 
 
-bool diplayInit(Display *display);
+bool displayInit(Display *display);
 bool displayDraw(Display *display, Chip8 *chip8);
 
 bool displayDestroy(Display *display);

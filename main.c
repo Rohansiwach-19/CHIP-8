@@ -1,4 +1,3 @@
-#include <stdio.h>
 #include "display.h"
 #include "chip.h"
 
@@ -9,7 +8,7 @@ int main(int argc, char **argv) {
 
     initCHIP8(&chip8);
     loadROM(&chip8, argv[1]);
-    diplayInit(&display);
+    displayInit(&display);
 
     bool done = false;
     while (!done) {

@@ -149,5 +149,5 @@ void emulateCycle (Chip8 *chip8){
                 chip8->pc += 2;
                 break;
         }
-    }
+
 }
